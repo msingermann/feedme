@@ -1,3 +1,24 @@
 = Feed.me Backend Service
 
 UNLaM Final Project Backend Service for Feed.me a Smart Feeder for your pets.
+
+== How to start
+
+Be sure you have installed Docker, if not please install it as the repo uses Test Containers for testing.
+
+Build jar
+
+ .\mvnw clean package
+
+build docker image
+
+ docker build -t server:1.0.0 .
+
+run docker image
+
+ docker run -p 8080:8080 server:1.0.0
+
+curl from a console
+
+ curl localhost:8080/actuator/health
+ {"status":"UP"}

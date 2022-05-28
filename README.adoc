@@ -1,0 +1,3 @@
+= Feed.me Backend Service
+
+UNLaM Final Project Backend Service for Feed.me a Smart Feeder for your pets.

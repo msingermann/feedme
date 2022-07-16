@@ -21,7 +21,7 @@ import java.util.UUID;
 public class TokenValidatorFilter implements HandlerInterceptor {
 
     public static final String BEARER_PREFIX = "bearer ";
-    public static final String USER_ID = "userId";
+    public static final String USER = "user";
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenValidatorFilter.class);
 
     private final AuthService authService;
@@ -38,7 +38,7 @@ public class TokenValidatorFilter implements HandlerInterceptor {
             String token = authHeaderValue.substring(BEARER_PREFIX.length());
             User user = authService.getUserFromToken(UUID.fromString(token));
             LOGGER.info("User validated! User: {}, ID: {}.", user.getUsername(), user.getId());
-            request.setAttribute(USER_ID, user.getId());
+            request.setAttribute(USER, user);
             return true;
         } catch(Exception e) {
             throw new ForbbidenException();

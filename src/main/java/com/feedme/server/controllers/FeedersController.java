@@ -23,19 +23,16 @@ public class FeedersController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedersController.class);
     private final FeedersService feedersService;
-    private final UsersService usersService;
 
     @Autowired
-    public FeedersController(FeedersService feedersService, UsersService usersService) {
+    public FeedersController(FeedersService feedersService) {
         this.feedersService = feedersService;
-        this.usersService = usersService;
     }
 
     @RequestMapping(value = "/feeders", method = RequestMethod.POST)
     public CreateFeederResponse registerFeeder(HttpServletRequest httpServletRequest,
                                                @RequestBody CreateFeederRequest createFeederRequest) {
-        long userId = (long) httpServletRequest.getAttribute(TokenValidatorFilter.USER_ID);
-        User user = usersService.getUser(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
         Feeder newFeeder = feedersService.registerFeeder(user, createFeederRequest.getMac(), createFeederRequest.getName());
         return FeedersTransformer.transform(newFeeder);
 
@@ -44,8 +41,7 @@ public class FeedersController {
     @RequestMapping(value = "/feeders/{feederId}", method = RequestMethod.GET)
     public Feeder registerFeeder(HttpServletRequest httpServletRequest,
                                                @PathVariable UUID feederId) {
-        long userId = (long) httpServletRequest.getAttribute(TokenValidatorFilter.USER_ID);
-        User user = usersService.getUser(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
         return feedersService.getFeeder(feederId, user).orElseThrow(() -> new FeederNotFoundException(feederId));
 
     }

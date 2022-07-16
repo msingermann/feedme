@@ -7,10 +7,10 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE UNIQUE INDEX IF NOT EXISTS name_index ON users(username);
 
 CREATE TABLE IF NOT EXISTS tokens (
-    token VARCHAR(36) PRIMARY KEY,
+    token UUID PRIMARY KEY,
     user_id INT NOT NULL,
     timestamp TIMESTAMPTZ DEFAULT NOW() NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS feeders (
     id UUID PRIMARY KEY,

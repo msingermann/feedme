@@ -1,9 +1,9 @@
 package com.feedme.server.controllers;
 
-import com.feedme.server.model.CreateUserRequest;
-import com.feedme.server.model.CreateUserResponse;
-import com.feedme.server.model.User;
+import com.feedme.server.model.*;
+import com.feedme.server.services.AuthService;
 import com.feedme.server.services.UsersService;
+import com.feedme.server.transformers.UserTokensTransformer;
 import com.feedme.server.transformers.UsersTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +18,13 @@ public class UsersController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsersController.class);
 
-    private static UsersService usersService;
+    private final UsersService usersService;
+    private final AuthService authService;
 
     @Autowired
-    public UsersController(UsersService usersService) {
+    public UsersController(UsersService usersService, AuthService authService) {
         this.usersService = usersService;
+        this.authService = authService;
     }
 
     /**
@@ -36,5 +38,13 @@ public class UsersController {
         LOGGER.debug("Create Users request received.");
         User user = usersService.createUser(createUserRequest.getUsername(), createUserRequest.getPassword());
         return UsersTransformer.transform(user);
+    }
+
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public LoginUserResponse createUser(@RequestBody LoginUserRequest loginUserRequest) {
+        LOGGER.debug("Login Users request received.");
+        UserToken token = authService.login(loginUserRequest.getUsername(), loginUserRequest.getPassword());
+        return UserTokensTransformer.transform(token);
     }
 }

@@ -8,7 +8,7 @@ Be sure you have installed Docker, if not please install it as the repo uses Tes
 
 Build jar
 
- .\mvnw clean package
+ ./mvnw clean package
 
 build docker image
 

@@ -1,5 +1,6 @@
 package com.feedme.server;
 
+import com.feedme.server.IntegrationTests;
 import com.feedme.server.model.CreateUserRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class UsersTests extends  IntegrationTests {
+public class UsersTests extends IntegrationTests {
 
 
     @Test

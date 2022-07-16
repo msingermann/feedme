@@ -27,7 +27,11 @@ public class FeedersTests extends IntegrationTests {
         User user = usersRepository.findById(1L)
                 .orElseGet(() -> usersRepository.save(new User("feedersUser", "pa$$word")));
         LoginUserRequest loginPayload = new LoginUserRequest(user.getUsername(), user.getPassword());
-        token = RestAssured.given().port(port).contentType(ContentType.JSON).given().body(loginPayload).post(LOGIN_PATH).then()
+        token = RestAssured.given().port(port).
+                contentType(ContentType.JSON)
+                .body(loginPayload)
+                .post(LOGIN_PATH)
+                .then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("token", notNullValue())
                 .extract()
@@ -39,7 +43,12 @@ public class FeedersTests extends IntegrationTests {
     @Test
     public void registerFeeder() {
         CreateFeederRequest payload = new CreateFeederRequest("mac111111", "MyFeeder");
-        RestAssured.given().port(port).contentType(ContentType.JSON).given().body(payload).header(HttpHeaders.AUTHORIZATION, "bearer " + token).post(REGISTER_FEEDERS_PATH).then()
+        RestAssured.given().port(port)
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
+                .post(REGISTER_FEEDERS_PATH)
+                .then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue());
     }
@@ -47,14 +56,22 @@ public class FeedersTests extends IntegrationTests {
     @Test
     public void userDontExists() {
         CreateFeederRequest payload = new CreateFeederRequest("mac22222", "MyFeeder");
-        RestAssured.given().port(port).contentType(ContentType.JSON).given().body(payload).post(REGISTER_FEEDERS_PATH).then()
+        RestAssured.given().port(port)
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .post(REGISTER_FEEDERS_PATH)
+                .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }
 
     @Test
     public void getFeeder() {
         CreateFeederRequest payload = new CreateFeederRequest("mac33333", "MyFeeder");
-        UUID feederId = RestAssured.given().port(port).contentType(ContentType.JSON).given().body(payload).header(HttpHeaders.AUTHORIZATION, "bearer " + token).post(REGISTER_FEEDERS_PATH).then()
+        UUID feederId = RestAssured.given().port(port)
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
+                .post(REGISTER_FEEDERS_PATH).then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue())
                 .extract()
@@ -62,7 +79,8 @@ public class FeedersTests extends IntegrationTests {
                 .jsonPath()
                 .getUUID("id");
 
-        RestAssured.given().port(port).contentType(ContentType.JSON)
+        RestAssured.given().port(port)
+                .contentType(ContentType.JSON)
                 .given()
                 .body(payload)
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
@@ -71,11 +89,16 @@ public class FeedersTests extends IntegrationTests {
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue());
     }
+
     @Test
     public void getFromDifferentUserShouldNotFound() {
         User user2 = usersRepository.save(new User("feedersUser2", "pa$$word"));
         LoginUserRequest loginPayload = new LoginUserRequest(user2.getUsername(), user2.getPassword());
-        UUID token2 = RestAssured.given().port(port).contentType(ContentType.JSON).given().body(loginPayload).post(LOGIN_PATH).then()
+        UUID token2 = RestAssured.given().port(port)
+                .contentType(ContentType.JSON)
+                .body(loginPayload)
+                .post(LOGIN_PATH)
+                .then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("token", notNullValue())
                 .extract()
@@ -85,7 +108,12 @@ public class FeedersTests extends IntegrationTests {
 
         // Create with user1
         CreateFeederRequest payload = new CreateFeederRequest("mac44444", "MyFeeder");
-        UUID feederId = RestAssured.given().port(port).contentType(ContentType.JSON).given().body(payload).header(HttpHeaders.AUTHORIZATION, "bearer " + token).post(REGISTER_FEEDERS_PATH).then()
+        UUID feederId = RestAssured.given().port(port)
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
+                .post(REGISTER_FEEDERS_PATH)
+                .then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue())
                 .extract()
@@ -94,7 +122,8 @@ public class FeedersTests extends IntegrationTests {
                 .getUUID("id");
 
         // Consume with user2
-        RestAssured.given().port(port).contentType(ContentType.JSON)
+        RestAssured.given().port(port)
+                .contentType(ContentType.JSON)
                 .given()
                 .body(payload)
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + token2)

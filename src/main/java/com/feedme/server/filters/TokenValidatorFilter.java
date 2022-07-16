@@ -40,7 +40,7 @@ public class TokenValidatorFilter implements HandlerInterceptor {
             LOGGER.info("User validated! User: {}, ID: {}.", user.getUsername(), user.getId());
             request.setAttribute(USER, user);
             return true;
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new ForbbidenException();
         }
     }

@@ -32,4 +32,6 @@ public class AuthService {
         UserToken userToken = tokensRepository.findById(token).orElseThrow(() -> new ForbbidenException());
         return userToken.getUser();
     }
+
+    //TODO: make tokens expire.
 }

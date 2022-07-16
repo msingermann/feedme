@@ -1,14 +1,12 @@
 package com.feedme.server.controllers;
 
 import com.feedme.server.exceptions.FeederNotFoundException;
-import com.feedme.server.exceptions.UserNotFoundException;
 import com.feedme.server.filters.TokenValidatorFilter;
 import com.feedme.server.model.CreateFeederRequest;
 import com.feedme.server.model.CreateFeederResponse;
 import com.feedme.server.model.Feeder;
 import com.feedme.server.model.User;
 import com.feedme.server.services.FeedersService;
-import com.feedme.server.services.UsersService;
 import com.feedme.server.transformers.FeedersTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +38,7 @@ public class FeedersController {
 
     @RequestMapping(value = "/feeders/{feederId}", method = RequestMethod.GET)
     public Feeder registerFeeder(HttpServletRequest httpServletRequest,
-                                               @PathVariable UUID feederId) {
+                                 @PathVariable UUID feederId) {
         User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
         return feedersService.getFeeder(feederId, user).orElseThrow(() -> new FeederNotFoundException(feederId));
 

@@ -1,6 +1,7 @@
 package com.feedme.server.services;
 
 import com.feedme.server.exceptions.NameAlreadyTakenException;
+import com.feedme.server.model.PatchUserRequest;
 import com.feedme.server.model.User;
 import com.feedme.server.repositories.UsersRepository;
 import org.slf4j.Logger;
@@ -26,15 +27,28 @@ public class UsersService {
      * {@inheritDoc}
      */
     @Transactional
-    public User createUser(String username, String password) {
-        Optional<User> previousUserWithThatName = usersRepository.findByUsername(username);
+    public User createUser(String email, String password) {
+        Optional<User> previousUserWithThatName = usersRepository.findByEmail(email);
         if (previousUserWithThatName.isPresent()) {
-            LOGGER.error("Name {} is already taken.", username);
-            throw new NameAlreadyTakenException("Name " + username + " is already taken.");
+            LOGGER.error("Email {} is already taken.", email);
+            throw new NameAlreadyTakenException("Email " + email + " is already taken.");
         }
-        User user = new User(username, password);
+        User user = new User(email, password);
         User persistedUser = usersRepository.save(user);
-        LOGGER.debug("User id: {}, name: {} created.", persistedUser.getId(), persistedUser.getUsername());
+        LOGGER.debug("User id: {}, email: {} created.", persistedUser.getId(), persistedUser.getEmail());
+        return user;
+    }
+
+    @Transactional
+    public User updateUser(User user, PatchUserRequest patchUserRequest) {
+        if (patchUserRequest.getEmail().isPresent()) {
+            user.setEmail(patchUserRequest.getEmail().get());
+        }
+        if (patchUserRequest.getPassword().isPresent()) {
+            user.setEmail(patchUserRequest.getPassword().get());
+        }
+        User persistedUser = usersRepository.save(user);
+        LOGGER.debug("User id: {}, name: {} updated.", persistedUser.getId(), persistedUser.getEmail());
         return user;
     }
 

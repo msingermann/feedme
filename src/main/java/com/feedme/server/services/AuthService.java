@@ -23,8 +23,8 @@ public class AuthService {
         this.tokensRepository = tokensRepository;
     }
 
-    public UserToken login(String username, String password) {
-        User user = usersRepository.findByUsernameAndPassword(username, password).orElseThrow(() -> new UnauthorizedException());
+    public UserToken login(String email, String password) {
+        User user = usersRepository.findByEmailAndPassword(email, password).orElseThrow(() -> new UnauthorizedException());
         return tokensRepository.save(new UserToken(UUID.randomUUID(), user));
     }
 

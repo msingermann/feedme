@@ -41,7 +41,7 @@ public class TokenValidatorFilter implements HandlerInterceptor {
             String authHeaderValue = request.getHeader(HttpHeaders.AUTHORIZATION);
             String token = authHeaderValue.substring(BEARER_PREFIX.length());
             User user = authService.getUserFromToken(UUID.fromString(token));
-            LOGGER.info("User validated! User: {}, ID: {}.", user.getUsername(), user.getId());
+            LOGGER.info("User validated! User: {}, ID: {}.", user.getEmail(), user.getId());
             request.setAttribute(USER, user);
             return true;
         } catch (Exception e) {

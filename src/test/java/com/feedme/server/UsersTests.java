@@ -38,20 +38,20 @@ public class UsersTests extends IntegrationTests {
     }
 
     @Test
-    public void usernameAlreadyTaken() {
-        String username = "usertaken";
-        CreateUserRequest payload = new CreateUserRequest(username, "pa$$word");
+    public void emailAlreadyTaken() {
+        String email = "usertaken";
+        CreateUserRequest payload = new CreateUserRequest(email, "pa$$word");
         RestAssured.given().port(port).contentType(ContentType.JSON).body(payload).post(USERS_PATH).then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue());
 
         RestAssured.given().port(port).contentType(ContentType.JSON).body(payload).post(USERS_PATH).then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
-                .and().body("message", is("Name " + username + " is already taken."));
+                .and().body("message", is("Email " + email + " is already taken."));
     }
 
     @Test
-    public void getuser() {
+    public void getUser() {
         CreateUserRequest payload = new CreateUserRequest("user4", "pa$$word");
         RestAssured.given().port(port).contentType(ContentType.JSON).body(payload).post(USERS_PATH).then()
                 .statusCode(HttpStatus.SC_OK)
@@ -77,7 +77,7 @@ public class UsersTests extends IntegrationTests {
                 .log().body()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue())
-                .and().body("username", is("user4"));
+                .and().body("email", is("user4"));
 
     }
 

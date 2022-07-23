@@ -39,10 +39,17 @@ public class UsersController {
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public CreateUserResponse createUser(@RequestBody CreateUserRequest createUserRequest) {
         LOGGER.debug("Create Users request received.");
-        User user = usersService.createUser(createUserRequest.getUsername(), createUserRequest.getPassword());
+        User user = usersService.createUser(createUserRequest.getEmail(), createUserRequest.getPassword());
         return UsersTransformer.transform(user);
     }
 
+    @RequestMapping(value = "/users", method = RequestMethod.PATCH)
+    public UserDTO patchUser(HttpServletRequest httpServletRequest,
+                             @RequestBody PatchUserRequest patchUserRequest) {
+        User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
+        User updatedUser = usersService.updateUser(user, patchUserRequest);
+        return UsersTransformer.transformToDTO(updatedUser);
+    }
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public UserDTO getUser(HttpServletRequest httpServletRequest,
                            @RequestBody CreateUserRequest createUserRequest) {
@@ -55,7 +62,7 @@ public class UsersController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginUserResponse createUser(@RequestBody LoginUserRequest loginUserRequest) {
         LOGGER.debug("Login Users request received.");
-        UserToken token = authService.login(loginUserRequest.getUsername(), loginUserRequest.getPassword());
+        UserToken token = authService.login(loginUserRequest.getEmail(), loginUserRequest.getPassword());
         return UserTokensTransformer.transform(token);
     }
 }

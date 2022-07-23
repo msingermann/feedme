@@ -1,16 +1,14 @@
 package com.feedme.server.model;
 
-import java.util.List;
-
 public class UserDTO {
 
     private long id;
 
-    private String username;
+    private String email;
 
-    public UserDTO(long id, String username) {
+    public UserDTO(long id, String email) {
         this.id = id;
-        this.username = username;
+        this.email = email;
     }
 
     public UserDTO() {
@@ -20,8 +18,8 @@ public class UserDTO {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
 }

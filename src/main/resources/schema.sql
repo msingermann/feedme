@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    username varchar(255) NOT NULL UNIQUE,
+    email varchar(255) NOT NULL UNIQUE,
     password varchar(255) NOT NULL
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS name_index ON users(username);
+CREATE UNIQUE INDEX IF NOT EXISTS name_index ON users(email);
 
 CREATE TABLE IF NOT EXISTS tokens (
     token UUID PRIMARY KEY,

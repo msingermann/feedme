@@ -1,6 +1,5 @@
 package com.feedme.server;
 
-import com.feedme.server.model.CreateFeederRequest;
 import com.feedme.server.model.CreatePetRequest;
 import com.feedme.server.model.LoginUserRequest;
 import com.feedme.server.model.User;
@@ -27,7 +26,7 @@ public class PetsTests extends IntegrationTests {
     public void initUser() {
         User user = usersRepository.findById(1L)
                 .orElseGet(() -> usersRepository.save(new User("feedersUser", "pa$$word")));
-        LoginUserRequest loginPayload = new LoginUserRequest(user.getUsername(), user.getPassword());
+        LoginUserRequest loginPayload = new LoginUserRequest(user.getEmail(), user.getPassword());
         token = RestAssured.given().port(port).
                 contentType(ContentType.JSON)
                 .body(loginPayload)
@@ -94,7 +93,7 @@ public class PetsTests extends IntegrationTests {
     @Test
     public void getFromDifferentUserShouldNotFound() {
         User user2 = usersRepository.save(new User("petsUser2", "pa$$word"));
-        LoginUserRequest loginPayload = new LoginUserRequest(user2.getUsername(), user2.getPassword());
+        LoginUserRequest loginPayload = new LoginUserRequest(user2.getEmail(), user2.getPassword());
         UUID token2 = RestAssured.given().port(port)
                 .contentType(ContentType.JSON)
                 .body(loginPayload)

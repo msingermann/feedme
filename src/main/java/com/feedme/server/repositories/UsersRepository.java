@@ -9,18 +9,18 @@ public interface UsersRepository extends CrudRepository<User, Long> {
     /**
      * Finds users by name and password to check if password is correct.
      *
-     * @param username User name.
+     * @param email User email.
      * @param password User password.
      * @return Optional of User. Empty if not present or password is not matched.
      */
-    Optional<User> findByUsernameAndPassword(String username, String password);
+    Optional<User> findByEmailAndPassword(String email, String password);
 
     /**
-     * Finds users by Name to check if the name is taken.
+     * Finds users by Name.
      *
-     * @param username User name.
-     * @return Returns a user if the name is taken.
+     * @param email User email.
+     * @return Returns a user if the name is found.
      */
-    Optional<User> findByUsername(String username);
+    Optional<User> findByEmail(String email);
 
 }

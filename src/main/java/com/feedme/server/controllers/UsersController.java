@@ -1,5 +1,6 @@
 package com.feedme.server.controllers;
 
+import com.feedme.server.filters.TokenValidatorFilter;
 import com.feedme.server.model.*;
 import com.feedme.server.services.AuthService;
 import com.feedme.server.services.UsersService;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class UsersController {
@@ -38,6 +41,14 @@ public class UsersController {
         LOGGER.debug("Create Users request received.");
         User user = usersService.createUser(createUserRequest.getUsername(), createUserRequest.getPassword());
         return UsersTransformer.transform(user);
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public UserDTO getUser(HttpServletRequest httpServletRequest,
+                           @RequestBody CreateUserRequest createUserRequest) {
+        User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
+        return UsersTransformer.transformToDTO(user);
+
     }
 
 

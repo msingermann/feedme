@@ -29,9 +29,6 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Feeder> feeders;
-
     public User(String username, String password) {
         super();
         this.username = username;
@@ -52,4 +49,5 @@ public class User {
     public String getPassword() {
         return password;
     }
+
 }

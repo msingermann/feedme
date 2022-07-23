@@ -3,6 +3,7 @@ package com.feedme.server.filters;
 import com.feedme.server.exceptions.ForbbidenException;
 import com.feedme.server.model.User;
 import com.feedme.server.services.AuthService;
+import io.micrometer.core.ipc.http.HttpSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class TokenValidatorFilter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) {
+        if(request.getRequestURI().equalsIgnoreCase("/users") && request.getMethod().equals(HttpSender.Method.POST.name())) {
+            return true;
+        }
         try {
             String authHeaderValue = request.getHeader(HttpHeaders.AUTHORIZATION);
             String token = authHeaderValue.substring(BEARER_PREFIX.length());

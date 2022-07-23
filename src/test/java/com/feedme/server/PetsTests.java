@@ -93,7 +93,7 @@ public class PetsTests extends IntegrationTests {
 
     @Test
     public void getFromDifferentUserShouldNotFound() {
-        User user2 = usersRepository.save(new User("feedersUser2", "pa$$word"));
+        User user2 = usersRepository.save(new User("petsUser2", "pa$$word"));
         LoginUserRequest loginPayload = new LoginUserRequest(user2.getUsername(), user2.getPassword());
         UUID token2 = RestAssured.given().port(port)
                 .contentType(ContentType.JSON)

@@ -39,7 +39,7 @@ public class UsersController {
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public CreateUserResponse createUser(@RequestBody CreateUserRequest createUserRequest) {
         LOGGER.debug("Create Users request received.");
-        User user = usersService.createUser(createUserRequest.getEmail(), createUserRequest.getPassword());
+        User user = usersService.createUser(createUserRequest.getEmail(), createUserRequest.getPassword(), createUserRequest.getName(), createUserRequest.getLastName(), createUserRequest.getPhone());
         return UsersTransformer.transform(user);
     }
 
@@ -52,8 +52,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public UserDTO getUser(HttpServletRequest httpServletRequest,
-                           @RequestBody CreateUserRequest createUserRequest) {
+    public UserDTO getUser(HttpServletRequest httpServletRequest) {
         User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
         return UsersTransformer.transformToDTO(user);
 

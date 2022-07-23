@@ -34,14 +34,18 @@ public class UsersService {
      * {@inheritDoc}
      */
     @Transactional
-    public User createUser(String email, String password) {
+    public User createUser(String email,
+                           String password,
+                           String name,
+                           String lastName,
+                           String phone) {
         validateEmail(email);
         Optional<User> previousUserWithThatName = usersRepository.findByEmail(email);
         if (previousUserWithThatName.isPresent()) {
             LOGGER.error("Email {} is already taken.", email);
             throw new NameAlreadyTakenException("Email " + email + " is already taken.");
         }
-        User user = new User(email, password);
+        User user = new User(email, password, name, lastName, phone);
         User persistedUser = usersRepository.save(user);
         LOGGER.debug("User id: {}, email: {} created.", persistedUser.getId(), persistedUser.getEmail());
         return user;
@@ -59,10 +63,20 @@ public class UsersService {
             user.setEmail(patchUserRequest.getEmail().get());
         }
         if (patchUserRequest.getPassword().isPresent()) {
-            user.setEmail(patchUserRequest.getPassword().get());
+            user.setPassword(patchUserRequest.getPassword().get());
         }
+        if (patchUserRequest.getName().isPresent()) {
+            user.setName(patchUserRequest.getName().get());
+        }
+        if (patchUserRequest.getLastName().isPresent()) {
+            user.setLastName(patchUserRequest.getLastName().get());
+        }
+        if (patchUserRequest.getPhone().isPresent()) {
+            user.setPhone(patchUserRequest.getPhone().get());
+        }
+
         User persistedUser = usersRepository.save(user);
-        LOGGER.debug("User id: {}, name: {} updated.", persistedUser.getId(), persistedUser.getEmail());
+        LOGGER.info("User id: {}, name: {} updated.", persistedUser.getId(), persistedUser.getEmail());
         return user;
     }
 

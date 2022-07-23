@@ -1,7 +1,10 @@
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email varchar(255) NOT NULL UNIQUE,
-    password varchar(255) NOT NULL
+    password varchar(255) NOT NULL,
+    last_name varchar(80),
+    name varchar(80),
+    phone varchar(40)
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS name_index ON users(email);

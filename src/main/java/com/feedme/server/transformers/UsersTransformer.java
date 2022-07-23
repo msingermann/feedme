@@ -17,7 +17,7 @@ public class UsersTransformer {
     }
 
     public static UserDTO transformToDTO(User user) {
-        return new UserDTO(user.getId(), user.getEmail());
+        return new UserDTO(user.getId(), user.getEmail(), user.getName(), user.getLastName(), user.getPhone());
     }
 
 }

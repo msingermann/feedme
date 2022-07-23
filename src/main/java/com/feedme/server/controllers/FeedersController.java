@@ -32,8 +32,8 @@ public class FeedersController {
                                                @RequestBody CreateFeederRequest createFeederRequest) {
         User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
         Feeder newFeeder = feedersService.registerFeeder(user, createFeederRequest.getMac(), createFeederRequest.getName());
-        return FeedersTransformer.transform(newFeeder);
 
+        return FeedersTransformer.transform(newFeeder);
     }
 
     @RequestMapping(value = "/feeders/{feederId}", method = RequestMethod.GET)
@@ -41,7 +41,6 @@ public class FeedersController {
                             @PathVariable UUID feederId) {
         User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
         return feedersService.getFeeder(feederId, user).orElseThrow(() -> new FeederNotFoundException(feederId));
-        //TODO al crear feeder crear un anexo 0 automagicamente
     }
 
 }

@@ -1,14 +1,12 @@
 package com.feedme.server.repositories;
 
+import com.feedme.server.model.Annex;
 import com.feedme.server.model.Feeder;
 import com.feedme.server.model.User;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface FeedersRepository extends CrudRepository<Feeder, UUID> {
-    Optional<Feeder> findByIdAndUser(UUID id, User user);
-    List<Feeder> findByUser(User user);
+public interface AnnexesRepository extends CrudRepository<Annex, UUID> {
 }

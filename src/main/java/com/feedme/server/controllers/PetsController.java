@@ -2,10 +2,8 @@ package com.feedme.server.controllers;
 
 import com.feedme.server.exceptions.PetNotFoundException;
 import com.feedme.server.filters.TokenValidatorFilter;
-import com.feedme.server.model.CreatePetRequest;
-import com.feedme.server.model.CreatePetResponse;
-import com.feedme.server.model.Pet;
-import com.feedme.server.model.User;
+import com.feedme.server.model.*;
+import com.feedme.server.services.AnnexesService;
 import com.feedme.server.services.PetsService;
 import com.feedme.server.transformers.PetsTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,13 @@ import java.util.UUID;
 public class PetsController {
 
     private final PetsService petsService;
+    private final AnnexesService annexesService;
 
     @Autowired
-    public PetsController(PetsService petsService) {
+    public PetsController(PetsService petsService,
+                          AnnexesService annexesService) {
         this.petsService = petsService;
+        this.annexesService = annexesService;
     }
 
 
@@ -29,7 +30,8 @@ public class PetsController {
     public CreatePetResponse createPet(HttpServletRequest httpServletRequest,
                                        @RequestBody CreatePetRequest createPetRequest) {
         User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
-        Pet newPet = petsService.createPet(user, createPetRequest.getName(), createPetRequest.getTag());
+        Annex annex = annexesService.getAnnex(createPetRequest.getAnnexId());
+        Pet newPet = petsService.createPet(user, createPetRequest.getName(), createPetRequest.getTag(), annex);
         return PetsTransformer.transform(newPet);
 
     }

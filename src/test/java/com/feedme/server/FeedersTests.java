@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 public class FeedersTests extends IntegrationTests {
 
@@ -85,9 +85,11 @@ public class FeedersTests extends IntegrationTests {
                 .body(payload)
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
                 .get(String.format(GET_FEEDER_PATH_TEMPLATE, feederId))
-                .then()
+                .then().log().body()
                 .statusCode(HttpStatus.SC_OK)
-                .and().body("id", notNullValue());
+                .and().body("id", notNullValue())
+                .and().body("annexes", notNullValue());
+
     }
 
     @Test

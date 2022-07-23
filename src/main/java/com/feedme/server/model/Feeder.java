@@ -1,10 +1,16 @@
 package com.feedme.server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "feeders")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Feeder {
 
     /**
@@ -28,15 +34,21 @@ public class Feeder {
     /**
      * User Id.
      */
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Feeder(UUID id, String mac, String name, User user) {
+    @JsonManagedReference
+    @OneToMany(mappedBy = "feeder", fetch = FetchType.EAGER)
+    private List<Annex> annexes;
+
+    public Feeder(UUID id, String mac, String name, User user, List<Annex> annexes) {
         this.id = id;
         this.mac = mac;
         this.name = name;
         this.user = user;
+        this.annexes = annexes;
     }
 
     public Feeder() {
@@ -52,5 +64,17 @@ public class Feeder {
 
     public String getName() {
         return name;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public List<Annex> getAnnexes() {
+        return annexes;
+    }
+
+    public void setAnnexes(List<Annex> annexes) {
+        this.annexes = annexes;
     }
 }

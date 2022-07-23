@@ -1,5 +1,6 @@
 package com.feedme.server.services;
 
+import com.feedme.server.model.Annex;
 import com.feedme.server.model.Pet;
 import com.feedme.server.model.User;
 import com.feedme.server.repositories.PetsRepository;
@@ -22,8 +23,8 @@ public class PetsService {
         this.petsRepository = petsRepository;
     }
 
-    public Pet createPet(User user, String name, String tag) {
-        Pet newPet = new Pet(UUID.randomUUID(), name, tag, user);
+    public Pet createPet(User user, String name, String tag, Annex annex) {
+        Pet newPet = new Pet(UUID.randomUUID(), name, tag, user, annex);
         petsRepository.save(newPet);
         return newPet;
     }

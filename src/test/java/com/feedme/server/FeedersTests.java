@@ -8,6 +8,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class FeedersTests extends IntegrationTests {
                 .contentType(ContentType.JSON)
                 .body(payload)
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
-                .post(REGISTER_FEEDERS_PATH)
+                .post(FEEDERS_PATH)
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue());
@@ -59,7 +60,7 @@ public class FeedersTests extends IntegrationTests {
         RestAssured.given().port(port)
                 .contentType(ContentType.JSON)
                 .body(payload)
-                .post(REGISTER_FEEDERS_PATH)
+                .post(FEEDERS_PATH)
                 .then()
                 .statusCode(HttpStatus.SC_FORBIDDEN);
     }
@@ -71,7 +72,7 @@ public class FeedersTests extends IntegrationTests {
                 .contentType(ContentType.JSON)
                 .body(payload)
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
-                .post(REGISTER_FEEDERS_PATH).then()
+                .post(FEEDERS_PATH).then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue())
                 .extract()
@@ -114,7 +115,7 @@ public class FeedersTests extends IntegrationTests {
                 .contentType(ContentType.JSON)
                 .body(payload)
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
-                .post(REGISTER_FEEDERS_PATH)
+                .post(FEEDERS_PATH)
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue())
@@ -133,4 +134,32 @@ public class FeedersTests extends IntegrationTests {
                 .then()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
     }
+
+
+    @Test
+    public void getFeeders() {
+        CreateFeederRequest payload = new CreateFeederRequest("mac5555", "MyFeeder");
+        UUID feederId = RestAssured.given().port(port)
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
+                .post(FEEDERS_PATH).then()
+                .statusCode(HttpStatus.SC_OK)
+                .and().body("id", notNullValue())
+                .extract()
+                .body()
+                .jsonPath()
+                .getUUID("id");
+
+        RestAssured.given().port(port)
+                .contentType(ContentType.JSON)
+                .given()
+                .body(payload)
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
+                .get(String.format(FEEDERS_PATH, feederId))
+                .then().log().body()
+                .statusCode(HttpStatus.SC_OK);
+
+    }
+
 }

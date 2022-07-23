@@ -48,7 +48,7 @@ public class PetsTests extends IntegrationTests {
                 .contentType(ContentType.JSON)
                 .body(payload)
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
-                .post(REGISTER_FEEDERS_PATH).then()
+                .post(FEEDERS_PATH).then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue())
                 .extract()

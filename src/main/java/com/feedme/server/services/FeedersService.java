@@ -40,4 +40,7 @@ public class FeedersService {
     }
 
 
+    public List<Feeder> getFeeders(User user) {
+        return feedersRepository.findAllByUser(user);
+    }
 }

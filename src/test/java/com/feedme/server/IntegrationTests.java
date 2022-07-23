@@ -17,7 +17,7 @@ public class IntegrationTests {
 
     protected final static String USERS_PATH = "/users";
     protected final static String LOGIN_PATH = "/login";
-    protected final static String REGISTER_FEEDERS_PATH = "/feeders";
+    protected final static String FEEDERS_PATH = "/feeders";
     protected final static String GET_FEEDER_PATH_TEMPLATE = "/feeders/%s";
     protected final static String CREATE_PET_PATH = "/pets";
     protected final static String GET_PET_PATH_TEMPLATE = "/pets/%s";

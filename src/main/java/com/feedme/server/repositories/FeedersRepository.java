@@ -10,5 +10,6 @@ import java.util.UUID;
 
 public interface FeedersRepository extends CrudRepository<Feeder, UUID> {
     Optional<Feeder> findByIdAndUser(UUID id, User user);
-    List<Feeder> findByUser(User user);
+    List<Feeder> findAllByUser(User user);
+
 }

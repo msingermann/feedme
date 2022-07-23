@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -41,6 +42,12 @@ public class FeedersController {
                             @PathVariable UUID feederId) {
         User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
         return feedersService.getFeeder(feederId, user).orElseThrow(() -> new FeederNotFoundException(feederId));
+    }
+
+    @RequestMapping(value = "/feeders", method = RequestMethod.GET)
+    public List<Feeder> getFeeder(HttpServletRequest httpServletRequest) {
+        User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
+        return feedersService.getFeeders(user);
     }
 
 }

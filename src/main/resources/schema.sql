@@ -17,5 +17,13 @@ CREATE TABLE IF NOT EXISTS feeders (
     mac varchar(255) NOT NULL UNIQUE,
     name varchar(255) NOT NULL,
     user_id INT NOT NULL,
-    CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(id)
+    CONSTRAINT fk_feeders_user_id FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS pets (
+    id UUID PRIMARY KEY,
+    name varchar(255) NOT NULL,
+    tag varchar(255) NOT NULL,
+    user_id INT NOT NULL,
+    CONSTRAINT fk_pets_user_id FOREIGN KEY(user_id) REFERENCES users(id)
 );

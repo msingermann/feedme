@@ -4,26 +4,26 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "feeders")
-public class Feeder {
+@Table(name = "pets")
+public class Pet {
 
     /**
-     * Feeder internal Id.
+     * Pet Id.
      */
     @Id
     private UUID id;
 
     /**
-     * Feeder mac address.
-     */
-    @Column(name = "mac", nullable = false)
-    private String mac;
-
-    /**
-     * Feeder Name.
+     * User Name (must be unique).
      */
     @Column(name = "name", nullable = false)
     private String name;
+
+    /**
+     * Tag Id.
+     */
+    @Column(name = "tag", nullable = false)
+    private String tag;
 
     /**
      * User Id.
@@ -32,25 +32,28 @@ public class Feeder {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Feeder(UUID id, String mac, String name, User user) {
+    public Pet(UUID id, String name, String tag, User user) {
         this.id = id;
-        this.mac = mac;
         this.name = name;
+        this.tag = tag;
         this.user = user;
     }
-
-    public Feeder() {
+    public Pet() {
     }
 
     public UUID getId() {
         return id;
     }
 
-    public String getMac() {
-        return mac;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

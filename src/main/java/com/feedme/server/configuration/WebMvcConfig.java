@@ -17,7 +17,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(tokenValidatorFilter)
                 .addPathPatterns("/feeders")
                 .addPathPatterns("/feeders/*")
-                .addPathPatterns("/pets/*")
-                .addPathPatterns("/feeders/*");
+                .addPathPatterns("/pets")
+                .addPathPatterns("/pets/*");
     }
 }

@@ -1,6 +1,5 @@
 package com.feedme.server.services;
 
-import com.feedme.server.model.Feeder;
 import com.feedme.server.model.Pet;
 import com.feedme.server.model.User;
 import com.feedme.server.repositories.PetsRepository;

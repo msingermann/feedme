@@ -50,6 +50,7 @@ public class UsersController {
         User updatedUser = usersService.updateUser(user, patchUserRequest);
         return UsersTransformer.transformToDTO(updatedUser);
     }
+
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public UserDTO getUser(HttpServletRequest httpServletRequest,
                            @RequestBody CreateUserRequest createUserRequest) {

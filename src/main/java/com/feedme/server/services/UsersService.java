@@ -1,5 +1,6 @@
 package com.feedme.server.services;
 
+import com.feedme.server.exceptions.EmailNotValidException;
 import com.feedme.server.exceptions.NameAlreadyTakenException;
 import com.feedme.server.model.PatchUserRequest;
 import com.feedme.server.model.User;
@@ -11,16 +12,22 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Component
 public class UsersService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsersService.class);
     private final UsersRepository usersRepository;
+    private final Pattern pattern;
 
     @Autowired
     public UsersService(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
+
+        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(regexPattern);
     }
 
     /**
@@ -28,6 +35,7 @@ public class UsersService {
      */
     @Transactional
     public User createUser(String email, String password) {
+        validateEmail(email);
         Optional<User> previousUserWithThatName = usersRepository.findByEmail(email);
         if (previousUserWithThatName.isPresent()) {
             LOGGER.error("Email {} is already taken.", email);
@@ -37,6 +45,12 @@ public class UsersService {
         User persistedUser = usersRepository.save(user);
         LOGGER.debug("User id: {}, email: {} created.", persistedUser.getId(), persistedUser.getEmail());
         return user;
+    }
+
+    private void validateEmail(String email) {
+        if (!pattern.matcher(email).matches()) {
+            throw new EmailNotValidException(email);
+        }
     }
 
     @Transactional

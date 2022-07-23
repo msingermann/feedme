@@ -34,7 +34,7 @@ public class TokenValidatorFilter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) {
-        if(request.getRequestURI().equalsIgnoreCase("/users") && request.getMethod().equals(HttpSender.Method.POST.name())) {
+        if (request.getRequestURI().equalsIgnoreCase("/users") && request.getMethod().equals(HttpSender.Method.POST.name())) {
             return true;
         }
         try {

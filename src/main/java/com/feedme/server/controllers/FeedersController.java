@@ -38,10 +38,10 @@ public class FeedersController {
 
     @RequestMapping(value = "/feeders/{feederId}", method = RequestMethod.GET)
     public Feeder getFeeder(HttpServletRequest httpServletRequest,
-                                 @PathVariable UUID feederId) {
+                            @PathVariable UUID feederId) {
         User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
         return feedersService.getFeeder(feederId, user).orElseThrow(() -> new FeederNotFoundException(feederId));
-    //TODO al crear feeder crear un anexo 0 automagicamente
+        //TODO al crear feeder crear un anexo 0 automagicamente
     }
 
 }

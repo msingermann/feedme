@@ -9,7 +9,7 @@ public interface UsersRepository extends CrudRepository<User, Long> {
     /**
      * Finds users by name and password to check if password is correct.
      *
-     * @param email User email.
+     * @param email    User email.
      * @param password User password.
      * @return Optional of User. Empty if not present or password is not matched.
      */

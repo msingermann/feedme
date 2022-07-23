@@ -36,7 +36,7 @@ public class PetsController {
 
     @RequestMapping(value = "/pets/{petId}", method = RequestMethod.GET)
     public Pet getPet(HttpServletRequest httpServletRequest,
-                              @PathVariable UUID petId) {
+                      @PathVariable UUID petId) {
         User user = (User) httpServletRequest.getAttribute(TokenValidatorFilter.USER);
         return petsService.getPet(petId, user).orElseThrow(() -> new PetNotFoundException(petId));
 

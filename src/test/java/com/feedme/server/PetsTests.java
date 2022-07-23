@@ -25,7 +25,7 @@ public class PetsTests extends IntegrationTests {
     @BeforeEach
     public void initUser() {
         User user = usersRepository.findById(1L)
-                .orElseGet(() -> usersRepository.save(new User("feedersUser", "pa$$word")));
+                .orElseGet(() -> usersRepository.save(new User("petsUser@domain.com", "pa$$word")));
         LoginUserRequest loginPayload = new LoginUserRequest(user.getEmail(), user.getPassword());
         token = RestAssured.given().port(port).
                 contentType(ContentType.JSON)
@@ -85,14 +85,14 @@ public class PetsTests extends IntegrationTests {
                 .body(payload)
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
                 .get(String.format(GET_PET_PATH_TEMPLATE, petId))
-                .then().log().body()
+                .then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue());
     }
 
     @Test
     public void getFromDifferentUserShouldNotFound() {
-        User user2 = usersRepository.save(new User("petsUser2", "pa$$word"));
+        User user2 = usersRepository.save(new User("petsUser2@domain.com", "pa$$word"));
         LoginUserRequest loginPayload = new LoginUserRequest(user2.getEmail(), user2.getPassword());
         UUID token2 = RestAssured.given().port(port)
                 .contentType(ContentType.JSON)
@@ -128,7 +128,7 @@ public class PetsTests extends IntegrationTests {
                 .body(payload)
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + token2)
                 .get(String.format(GET_PET_PATH_TEMPLATE, petId))
-                .then().log().body()
+                .then()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
     }
 }

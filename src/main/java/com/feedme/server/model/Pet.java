@@ -38,6 +38,7 @@ public class Pet {
         this.tag = tag;
         this.user = user;
     }
+
     public Pet() {
     }
 

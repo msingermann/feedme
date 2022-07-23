@@ -1,8 +1,5 @@
 package com.feedme.server.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.UUID;
 
 public class CreatePetResponse {

@@ -18,20 +18,29 @@ public class UsersTests extends IntegrationTests {
 
     @Test
     public void createUser() {
-        CreateUserRequest payload = new CreateUserRequest("user", "pa$$word");
+        CreateUserRequest payload = new CreateUserRequest("user@domain.com", "pa$$word");
         RestAssured.given().port(port).contentType(ContentType.JSON).body(payload).post(USERS_PATH).then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue());
     }
 
     @Test
+    public void invalidEmail() {
+        String email = "invalid@email";
+        CreateUserRequest payload = new CreateUserRequest(email, "pa$$word");
+        RestAssured.given().port(port).contentType(ContentType.JSON).body(payload).post(USERS_PATH).then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .and().body("message", is("Email " + email + " is not valid."));
+    }
+
+    @Test
     public void loginUser() {
-        CreateUserRequest payload = new CreateUserRequest("user3", "pa$$word");
+        CreateUserRequest payload = new CreateUserRequest("user3@domain.com", "pa$$word");
         RestAssured.given().port(port).contentType(ContentType.JSON).body(payload).post(USERS_PATH).then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue());
 
-        LoginUserRequest loginPayload = new LoginUserRequest("user3", "pa$$word");
+        LoginUserRequest loginPayload = new LoginUserRequest("user3@domain.com", "pa$$word");
         RestAssured.given().port(port).contentType(ContentType.JSON).given().body(loginPayload).post(LOGIN_PATH).then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("token", notNullValue());
@@ -39,7 +48,7 @@ public class UsersTests extends IntegrationTests {
 
     @Test
     public void emailAlreadyTaken() {
-        String email = "usertaken";
+        String email = "usertaken@domain.com";
         CreateUserRequest payload = new CreateUserRequest(email, "pa$$word");
         RestAssured.given().port(port).contentType(ContentType.JSON).body(payload).post(USERS_PATH).then()
                 .statusCode(HttpStatus.SC_OK)
@@ -52,12 +61,12 @@ public class UsersTests extends IntegrationTests {
 
     @Test
     public void getUser() {
-        CreateUserRequest payload = new CreateUserRequest("user4", "pa$$word");
+        CreateUserRequest payload = new CreateUserRequest("user4@domain.com", "pa$$word");
         RestAssured.given().port(port).contentType(ContentType.JSON).body(payload).post(USERS_PATH).then()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue());
 
-        LoginUserRequest loginPayload = new LoginUserRequest("user4", "pa$$word");
+        LoginUserRequest loginPayload = new LoginUserRequest("user4@domain.com", "pa$$word");
         UUID token = RestAssured.given().port(port).
                 contentType(ContentType.JSON)
                 .body(loginPayload)
@@ -74,10 +83,9 @@ public class UsersTests extends IntegrationTests {
                 .header(HttpHeaders.AUTHORIZATION, "bearer " + token)
                 .get(USERS_PATH)
                 .then()
-                .log().body()
                 .statusCode(HttpStatus.SC_OK)
                 .and().body("id", notNullValue())
-                .and().body("email", is("user4"));
+                .and().body("email", is("user4@domain.com"));
 
     }
 
